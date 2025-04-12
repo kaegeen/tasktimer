@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Task Timer</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-white text-black flex items-center justify-center min-h-screen">
+  <div class="w-full max-w-md border p-8 rounded shadow text-center">
+    <h1 class="text-2xl font-semibold mb-4">Task Timer</h1>
+    
+    <input type="text" id="task" placeholder="Task name" class="border px-2 py-1 w-full mb-4" />
+    <input type="number" id="minutes" placeholder="Minutes" class="border px-2 py-1 w-full mb-4" />
+    
+    <button onclick="startTimer()" class="border px-4 py-2 w-full">Start</button>
+    
+    <div id="output" class="mt-6 text-lg font-mono"></div>
+  </div>
+
+  <script>
+    let timer;
+
+    function startTimer() {
+      const task = document.getElementById("task").value;
+      let minutes = parseInt(document.getElementById("minutes").value, 10);
+      let seconds = minutes * 60;
+
+      if (isNaN(seconds) || seconds <= 0) {
+        document.getElementById("output").textContent = "Enter a valid time.";
+        return;
+      }
+
+      clearInterval(timer);
+
+      timer = setInterval(() => {
+        const m = String(Math.floor(seconds / 60)).padStart(2, '0');
+        const s = String(seconds % 60).padStart(2, '0');
+        document.getElementById("output").textContent = `${task || 'Task'}: ${m}:${s}`;
+        seconds--;
+
+        if (seconds < 0) {
+          clearInterval(timer);
+          document.getElementById("output").textContent = `${task || 'Task'} is done.`;
+        }
+      }, 1000);
+    }
+  </script>
+</body>
+</html>
